@@ -74,10 +74,10 @@ function RandomInterval(min,max){
 
 
 class Ball{
-    constructor(){
+    constructor(x,y){
         this.r = 25
-        this.x = RandomInterval(0+this.r,innerWidth-this.r)
-        this.y = RandomInterval(0+this.r,innerHeight-this.r)
+        this.x = x || RandomInterval(0+this.r,innerWidth-this.r)
+        this.y = y || RandomInterval(0+this.r,innerHeight-this.r)
         this.vx = (Math.random() - 0.5) * 10
         this.vy = (Math.random() - 0.5) * 10
         this.color = "#" + Math.floor(Math.random()* 1000)
@@ -113,8 +113,12 @@ class Ball{
 
 let balls = []
 for (let i = 0; i < 50; i++) {
-    balls.push(new Ball)  
+    balls.push(new Ball())  
 }
+
+window.addEventListener("click",function(e){
+    balls.push(new Ball(e.clientX,e.clientY))
+})
 
 function Animate(){
     gcx.clearRect(0,0,window.innerWidth,window.innerHeight)
