@@ -75,7 +75,8 @@ function RandomInterval(min,max){
 
 class Ball{
     constructor(x,y){
-        this.r = 25
+        this.BaseR = 25
+        this.r = this.BaseR
         this.x = x || RandomInterval(0+this.r,innerWidth-this.r)
         this.y = y || RandomInterval(0+this.r,innerHeight-this.r)
         this.vx = (Math.random() - 0.5) * 10
@@ -112,13 +113,32 @@ class Ball{
 }
 
 let balls = []
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 100; i++) {
     balls.push(new Ball())  
 }
 
 window.addEventListener("click",function(e){
     balls.push(new Ball(e.clientX,e.clientY))
 })
+
+
+window.addEventListener("mousemove",function(e){
+    balls.forEach(ball=>{
+        let distance = Math.sqrt(Math.pow(e.clientX - ball.x,2) + Math.pow(e.clientY - ball.y,2) )
+        if (distance < 50 && ball.r < ball.BaseR * 2) {
+            ball.r +=1
+        }
+        else if (ball.r > ball.BaseR) {
+            ball.r -=1
+        }
+    })
+
+})
+window.addEventListener("resize",function(e){
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+})
+
 
 function Animate(){
     gcx.clearRect(0,0,window.innerWidth,window.innerHeight)
@@ -128,3 +148,4 @@ function Animate(){
     requestAnimationFrame(Animate)
 }
 Animate()
+
